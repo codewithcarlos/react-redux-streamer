@@ -1,26 +1,40 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchStream } from '../../actions';
+import { fetchStream, editStream } from '../../actions';
+import StreamForm from './StreamForm';
 
 class StreamEdit extends React.Component {
   componentDidMount() {
     this.props.fetchStream(this.props.match.params.id);
   }
+
+  onSubmit = formValues => {
+    this.props.editStream(this.props.match.params.id, formValues);
+  };
+
   render() {
+    // console.log(this.props.stream);
     if (!this.props.stream) {
       return <div>Loading...</div>;
     }
-    return <div>{this.props.stream.title}</div>;
+    return (
+      <div>
+        <h3>Edit a Stream</h3>
+        <StreamForm
+          initialValues={
+            _.pick(this.props.stream, 'title', 'description')
+            // {
+            // title: this.props.stream.title,
+            // description: this.props.stream.description
+            // }
+          }
+          onSubmit={this.onSubmit}
+        />
+      </div>
+    );
   }
 }
-
-// ownProps is a reference to the props object that shows up inside of our StreamEdit component
-/* mapStateToProps always gets two arguments:
-    1. state from our redux store
-    2. the props object that shows up inside of our components
-*/
-
-//With React-Router, each component needs to be designed to work in isolation.
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -30,5 +44,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  { fetchStream }
+  { fetchStream, editStream }
 )(StreamEdit);

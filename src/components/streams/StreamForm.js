@@ -1,10 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-// Field is supposed to be a React component while reduxForm is a function similar to the connect function from the React-Redux library
-
-// class objects allow for helper methods inside class
-
 class StreamForm extends React.Component {
   renderError({ error, touched }) {
     if (touched && error) {
@@ -12,10 +8,8 @@ class StreamForm extends React.Component {
     }
   }
   renderInput = ({ input, label, meta }) => {
-    // any time you show an input element with react need to make sure we show input element, assign its value, and give it an onChange callback handler
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
-      // spread operator takes all properties of input object and adds them to the input element. Shorter way to write what we need
       <div className={className}>
         <label>{label}</label>
         <input {...input} autoComplete="off" />
@@ -29,7 +23,6 @@ class StreamForm extends React.Component {
   };
 
   render() {
-    // To customize helper functions we can just add additional props to field element since Field function by default will pass it through helper function
     return (
       <form
         onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -61,7 +54,6 @@ const validate = formValues => {
 };
 
 export default reduxForm({
-  // name the form to something that describes what the form will do
   form: 'streamForm',
   validate
 })(StreamForm);
